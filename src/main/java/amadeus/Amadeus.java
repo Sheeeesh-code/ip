@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Amadeus {
     public static void main(String[] args) {
-        String[] tasks = new String[100];
+        Task[] tasks = new Task[100];
         int count = 0;
         String logo =
                 "╔══════════════════════════════════════════════════════════════╗\n"
@@ -43,6 +43,7 @@ public class Amadeus {
                 break;
             }else if(answer.equals("Echo")){
                 System.out.println("The Mad Scientist chose the option Echo");
+                System.out.println("Echo mode activated. Type 'Esc' to exit.");
                 while(true) {
                     String echo = scanner.nextLine();
                     if (echo.equals("Esc")) {
@@ -62,6 +63,7 @@ public class Amadeus {
             }
             else if (answer.equals("D-mail")) {
                 System.out.println("The Mad Scientist chose to send a D-mail");
+                System.out.println("D-mail mode activated. Type 'El Psy Kongroo' to exit.");
                 while (true) {
                     String echo = scanner.nextLine();
                     if (echo.equals("El Psy Kongroo")) {
@@ -82,6 +84,7 @@ public class Amadeus {
                 }
             }
             else if (answer.equals("List")) {
+                System.out.println("List mode activated. Type 'Bye' to exit.");
                 while (true) {
                     String echo = scanner.nextLine();
                     if (echo.equals("Bye")) {
@@ -91,9 +94,23 @@ public class Amadeus {
                         for (int i = 0; i < count; i++) {
                             System.out.println((i + 1) + ". " + tasks[i]);
                         }
+                    } else if (echo.toLowerCase().startsWith("mark")) {
+                        int idx = Integer.parseInt(echo.split(" ")[1]) - 1;
+                        tasks[idx].markAsDone();
+                        System.out.println("────────────────────────────────────────────────────────────────");
+                        System.out.println("Nice! I've marked this task as done:");
+                        System.out.println("  " + tasks[idx]);
+                        System.out.println("────────────────────────────────────────────────────────────────");
+                    } else if (echo.toLowerCase().startsWith("unmark")) {
+                        int idx = Integer.parseInt(echo.split(" ")[1]) - 1;
+                        tasks[idx].markAsUndone();
+                        System.out.println("────────────────────────────────────────────────────────────────");
+                        System.out.println("OK, I've marked this task as not done yet:");
+                        System.out.println("  " + tasks[idx]);
+                        System.out.println("────────────────────────────────────────────────────────────────");
                     } else {
                         if (count < 100) {
-                            tasks[count] = echo;
+                            tasks[count] = new Task(echo);
                             count++;
                             System.out.println("────────────────────────────────────────────────────────────────");
                             System.out.println(" added: " + echo);
