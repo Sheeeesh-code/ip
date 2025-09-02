@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class Amadeus {
     public static void main(String[] args) {
+        String[] tasks = new String[100];
+        int count = 0;
         String logo =
                 "╔══════════════════════════════════════════════════════════════╗\n"
                         + "║                                                              ║\n"
@@ -24,26 +26,26 @@ public class Amadeus {
         System.out.println("I monitor divergences in world lines… and sometimes your mistakes.");
         System.out.println("What knowledge do you seek today?");
         System.out.println();
-        System.out.println("Here are the different mode : 1. echo");
+        System.out.println("Here are the different mode : 1. Echo");
         System.out.println("                              2. D-mail");
+        System.out.println("                              3. List");
         System.out.print("Write the name of the command you wish use : ");
 
         Scanner scanner = new Scanner(System.in);
         while(true){
             String answer = scanner.nextLine();
             System.out.println();
-            if(answer.equals("bye")){
+            if(answer.equals("Disconnect")){
                 System.out.println("────────────────────────────────────────────────────────────────");
                 System.out.println("System shutting down... awaiting next transmission.");
                 System.out.println("El Psy Kongroo.");
                 System.out.println("────────────────────────────────────────────────────────────────");
                 break;
-            }
-            else if(answer.equals("echo")){
+            }else if(answer.equals("Echo")){
                 System.out.println("The Mad Scientist chose the option Echo");
                 while(true) {
                     String echo = scanner.nextLine();
-                    if (echo.equals("esc")) {
+                    if (echo.equals("Esc")) {
                         System.out.println("────────────────────────────────────────────────────────────────");
                         System.out.println("System shutting down... awaiting next transmission.");
                         System.out.println("El Psy Kongroo.");
@@ -76,6 +78,31 @@ public class Amadeus {
                         System.out.println("⚡ Time transmission in progress ...");
                         System.out.println("📧 Message received in world line 1.130205%: "+echo);
                         System.out.println("────────────────────────────────────────────────────────────────");
+                    }
+                }
+            }
+            else if (answer.equals("List")) {
+                while (true) {
+                    String echo = scanner.nextLine();
+                    if (echo.equals("Bye")) {
+                        System.out.println("The list printing is finished");
+                        break;
+                    } else if (echo.equals("list")) {
+                        for (int i = 0; i < count; i++) {
+                            System.out.println((i + 1) + ". " + tasks[i]);
+                        }
+                    } else {
+                        if (count < 100) {
+                            tasks[count] = echo;
+                            count++;
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                            System.out.println(" added: " + echo);
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                        } else {
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                            System.out.println("You already have too many things to do, finish some before adding more.");
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                        }
                     }
                 }
             }
