@@ -2,7 +2,7 @@ package amadeus;
 import java.util.Scanner;
 
 
-public class Amadeus {
+public class  Amadeus {
     public static void main(String[] args) {
         Task[] tasks = new Task[100];
         int count = 0;
@@ -108,9 +108,54 @@ public class Amadeus {
                         System.out.println("OK, I've marked this task as not done yet:");
                         System.out.println("  " + tasks[idx]);
                         System.out.println("────────────────────────────────────────────────────────────────");
+                    }else if (echo.toLowerCase().startsWith("todo")) {
+                        String desc = echo.substring(5).trim();
+                        tasks[count] = new ToDo(desc);
+                        count++;
+                        System.out.println("____________________________________________________________");
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println("  " + tasks[count - 1]);
+                        System.out.println("Now you have " + count + " tasks in the list.");
+                        System.out.println("____________________________________________________________");
+                    }
+                    else if (echo.toLowerCase().startsWith("deadline")) {
+                        String[] parts = echo.substring(9).split("/by");
+                        String desc = parts[0].trim();
+                        String by = parts.length > 1 ? parts[1].trim() : "unspecified";
+                        tasks[count] = new Deadline(desc, by);
+                        count++;
+                        System.out.println("____________________________________________________________");
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println("  " + tasks[count - 1]);
+                        System.out.println("Now you have " + count + " tasks in the list.");
+                        System.out.println("____________________________________________________________");
+                    }
+                    else if (echo.toLowerCase().startsWith("event")) {
+                        String[] parts = echo.substring(6).split("/from");
+                        String desc = parts[0].trim();
+                        String from = "", to = "";
+                        if (parts.length > 1) {
+                            String[] timeParts = parts[1].split("/to");
+                            from = timeParts[0].trim();
+                            if (timeParts.length > 1) {
+                                to = timeParts[1].trim();
+                            }
+                        }
+                        tasks[count] = new Event(desc, from, to);
+                        count++;
+                        System.out.println("____________________________________________________________");
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println("  " + tasks[count - 1]);
+                        System.out.println("Now you have " + count + " tasks in the list.");
+                        System.out.println("____________________________________________________________");
                     } else {
                         if (count < 100) {
-                            tasks[count] = new Task(echo);
+                            tasks[count] = new Task(echo) {
+                                @Override
+                                public String getTypeIcon() {
+                                    return "";
+                                }
+                            };
                             count++;
                             System.out.println("────────────────────────────────────────────────────────────────");
                             System.out.println(" added: " + echo);

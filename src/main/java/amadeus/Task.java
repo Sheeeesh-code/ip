@@ -1,13 +1,12 @@
 package amadeus;
 
-public class Task {
-    private final String description;
-    private boolean isDone;
+public abstract class Task {
+    protected final String description;
+    protected boolean isDone;
     public Task(String description) {
         this.description = description;
         this.isDone = false;
     }
-
     public void markAsDone() {
         this.isDone = true;
     }
@@ -17,8 +16,11 @@ public class Task {
     public String getStatusIcon() {
         return (isDone ? "[X]" : "[ ]");
     }
+
+    public abstract String getTypeIcon();
+
     @Override
     public String toString() {
-        return getStatusIcon() + " " + description;
+        return "[" + getTypeIcon() + "]" + getStatusIcon() + " " + description;
     }
 }
