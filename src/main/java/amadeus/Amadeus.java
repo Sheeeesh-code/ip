@@ -87,84 +87,81 @@ public class  Amadeus {
                 System.out.println("List mode activated. Type 'Bye' to exit.");
                 while (true) {
                     String echo = scanner.nextLine();
-                    if (echo.equals("Bye")) {
-                        System.out.println("The list printing is finished");
-                        break;
-                    } else if (echo.equals("list")) {
-                        for (int i = 0; i < count; i++) {
-                            System.out.println((i + 1) + ". " + tasks[i]);
-                        }
-                    } else if (echo.toLowerCase().startsWith("mark")) {
-                        int idx = Integer.parseInt(echo.split(" ")[1]) - 1;
-                        tasks[idx].markAsDone();
-                        System.out.println("────────────────────────────────────────────────────────────────");
-                        System.out.println("Nice! I've marked this task as done:");
-                        System.out.println("  " + tasks[idx]);
-                        System.out.println("────────────────────────────────────────────────────────────────");
-                    } else if (echo.toLowerCase().startsWith("unmark")) {
-                        int idx = Integer.parseInt(echo.split(" ")[1]) - 1;
-                        tasks[idx].markAsUndone();
-                        System.out.println("────────────────────────────────────────────────────────────────");
-                        System.out.println("OK, I've marked this task as not done yet:");
-                        System.out.println("  " + tasks[idx]);
-                        System.out.println("────────────────────────────────────────────────────────────────");
-                    }else if (echo.toLowerCase().startsWith("todo")) {
-                        String desc = echo.substring(5).trim();
-                        tasks[count] = new ToDo(desc);
-                        count++;
-                        System.out.println("____________________________________________________________");
-                        System.out.println("Got it. I've added this task:");
-                        System.out.println("  " + tasks[count - 1]);
-                        System.out.println("Now you have " + count + " tasks in the list.");
-                        System.out.println("____________________________________________________________");
-                    }
-                    else if (echo.toLowerCase().startsWith("deadline")) {
-                        String[] parts = echo.substring(9).split("/by");
-                        String desc = parts[0].trim();
-                        String by = parts.length > 1 ? parts[1].trim() : "unspecified";
-                        tasks[count] = new Deadline(desc, by);
-                        count++;
-                        System.out.println("____________________________________________________________");
-                        System.out.println("Got it. I've added this task:");
-                        System.out.println("  " + tasks[count - 1]);
-                        System.out.println("Now you have " + count + " tasks in the list.");
-                        System.out.println("____________________________________________________________");
-                    }
-                    else if (echo.toLowerCase().startsWith("event")) {
-                        String[] parts = echo.substring(6).split("/from");
-                        String desc = parts[0].trim();
-                        String from = "", to = "";
-                        if (parts.length > 1) {
-                            String[] timeParts = parts[1].split("/to");
-                            from = timeParts[0].trim();
-                            if (timeParts.length > 1) {
-                                to = timeParts[1].trim();
+                    try {
+                        if (echo.equals("Bye")) {
+                            System.out.println("The list printing is finished");
+                            break;
+                        } else if (echo.equals("list")) {
+                            for (int i = 0; i < count; i++) {
+                                System.out.println((i + 1) + ". " + tasks[i]);
                             }
-                        }
-                        tasks[count] = new Event(desc, from, to);
-                        count++;
-                        System.out.println("____________________________________________________________");
-                        System.out.println("Got it. I've added this task:");
-                        System.out.println("  " + tasks[count - 1]);
-                        System.out.println("Now you have " + count + " tasks in the list.");
-                        System.out.println("____________________________________________________________");
-                    } else {
-                        if (count < 100) {
-                            tasks[count] = new Task(echo) {
-                                @Override
-                                public String getTypeIcon() {
-                                    return "";
-                                }
-                            };
+                        } else if (echo.toLowerCase().startsWith("mark")) {
+                            int idx = Integer.parseInt(echo.split(" ")[1]) - 1;
+                            tasks[idx].markAsDone();
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                            System.out.println("Nice! I've marked this task as done:");
+                            System.out.println("  " + tasks[idx]);
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                        } else if (echo.toLowerCase().startsWith("unmark")) {
+                            int idx = Integer.parseInt(echo.split(" ")[1]) - 1;
+                            tasks[idx].markAsUndone();
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                            System.out.println("OK, I've marked this task as not done yet:");
+                            System.out.println("  " + tasks[idx]);
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                        } else if (echo.toLowerCase().startsWith("todo")) {
+                            String desc = echo.substring(5).trim();
+                            if (desc.isEmpty()) {
+                                throw new ExceptionAmadeus("The description of a todo cannot be empty.");
+                            }
+                            tasks[count] = new ToDo(desc);
                             count++;
                             System.out.println("────────────────────────────────────────────────────────────────");
-                            System.out.println(" added: " + echo);
+                            System.out.println("Got it. I've added this task:");
+                            System.out.println("  " + tasks[count - 1]);
+                            System.out.println("Now you have " + count + " tasks in the list.");
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                        } else if (echo.toLowerCase().startsWith("deadline")) {
+                            String[] parts = echo.substring(9).split("/by");
+                            String desc = parts[0].trim();
+                            String by = parts.length > 1 ? parts[1].trim() : "unspecified";
+                            tasks[count] = new Deadline(desc, by);
+                            count++;
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                            System.out.println("Got it. I've added this task:");
+                            System.out.println("  " + tasks[count - 1]);
+                            System.out.println("Now you have " + count + " tasks in the list.");
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                        } else if (echo.toLowerCase().startsWith("event")) {
+                            String[] parts = echo.substring(6).split("/from");
+                            String desc = parts[0].trim();
+                            String from = "", to = "";
+                            if (parts.length > 1) {
+                                String[] timeParts = parts[1].split("/to");
+                                from = timeParts[0].trim();
+                                if (timeParts.length > 1) {
+                                    to = timeParts[1].trim();
+                                }
+                            }
+                            tasks[count] = new Event(desc, from, to);
+                            count++;
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                            System.out.println("Got it. I've added this task:");
+                            System.out.println("  " + tasks[count - 1]);
+                            System.out.println("Now you have " + count + " tasks in the list.");
+                            System.out.println("____________________________________________________________");
+                        } else if (echo.toLowerCase().startsWith("delete")) {
+                            System.out.println("────────────────────────────────────────────────────────────────");
+                            System.out.println("Noted. I've removed this task:");
+                            System.out.println();
                             System.out.println("────────────────────────────────────────────────────────────────");
                         } else {
-                            System.out.println("────────────────────────────────────────────────────────────────");
-                            System.out.println("You already have too many things to do, finish some before adding more.");
-                            System.out.println("────────────────────────────────────────────────────────────────");
+                            throw new ExceptionAmadeus("Sorry, I don't know that command.");
                         }
+                    } catch (ExceptionAmadeus e) {
+                        System.out.println("────────────────────────────────────────────────────────────────");
+                        System.out.println(e.getMessage());
+                        System.out.println("────────────────────────────────────────────────────────────────");
                     }
                 }
             }
