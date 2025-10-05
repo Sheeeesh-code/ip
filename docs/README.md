@@ -1,6 +1,6 @@
 # Amadeus Chatbot User Guide
 
-![Product screenshot](docs/img.png)
+![Product screenshot](docs/image_amadeus.png)
 
 Welcome to **Amadeus**, your friendly command-line task manager chatbot!  
 Amadeus helps you manage your todos, deadlines, and events, all through a simple text interface.  
