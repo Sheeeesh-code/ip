@@ -11,6 +11,7 @@ public class Parser {
         case Commands.ECHO -> runEchoMode(scanner, ui);
         case Commands.DMAIL -> runDmailMode(scanner, ui);
         case Commands.LIST -> runListMode(scanner, taskList, storage, ui);
+        case "Find" -> runFindMode(scanner, taskList);
         default -> throw new AmadeusException("⚠️ Unknown command. Try again.");
         }
     }
@@ -62,6 +63,21 @@ public class Parser {
                 break;
             }
             taskList.handleCommand(input, storage, ui);
+        }
+    }
+    private static void runFindMode(Scanner scanner, TaskList taskList) {
+        System.out.println("Find mode activated. Type a keyword to search in tasks:");
+        while (true) {
+            String input = scanner.nextLine().trim();
+            if ("Bye".equalsIgnoreCase(input)) {
+                System.out.println("Exiting find mode.");
+                break;
+            }
+            try {
+                taskList.handleCommand("find " + input, null, null);
+            } catch (AmadeusException | IOException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 }

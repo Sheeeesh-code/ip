@@ -59,6 +59,26 @@ public class TaskList {
             int idx = Integer.parseInt(input.split(" ")[1]) - 1;
             Task removed = tasks.remove(idx);
             Ui.taskDeleted(removed, tasks.size());
+        } else if (input.toLowerCase().startsWith("find")) {
+            String keyword = input.substring(5).trim();
+            if (keyword.isEmpty()) {
+                throw new AmadeusException("Please provide a keyword to search for.");
+            }
+
+            System.out.println("────────────────────────────────────────────────────────────────");
+            System.out.println("Here are the matching tasks in your list:");
+            int count = 0;
+            for (int i = 0; i < tasks.size(); i++) {
+                Task t = tasks.get(i);
+                if (t.description.toLowerCase().contains(keyword.toLowerCase())) {
+                    System.out.println((count + 1) + "." + t);
+                    count++;
+                }
+            }
+            if (count == 0) {
+                System.out.println("No matching tasks found.");
+            }
+            System.out.println("────────────────────────────────────────────────────────────────");
         } else {
             throw new AmadeusException("Sorry, I don't know that command.");
         }
