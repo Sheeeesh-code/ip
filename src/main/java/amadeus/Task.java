@@ -44,8 +44,9 @@ public abstract class Task {
                 if (done) d.markAsDone();
                 return d;
             case "E":
-                String time = parts[3].trim();
-                Task e = new Event(desc, time, "");
+                String fromStr = parts[3].trim();
+                String toStr = parts.length > 4 ? parts[4].trim() : "";
+                Task e = new Event(desc, fromStr, toStr);
                 if (done) e.markAsDone();
                 return e;
             }

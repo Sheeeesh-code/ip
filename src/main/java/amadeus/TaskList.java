@@ -24,41 +24,41 @@ public class TaskList {
             int idx = Integer.parseInt(input.split(" ")[1]) - 1;
             tasks.get(idx).markAsDone();
             storage.save(tasks);
-            ui.taskUpdated("Nice! I've marked this task as done:", tasks.get(idx));
+            Ui.taskUpdated("Nice! I've marked this task as done:", tasks.get(idx));
         } else if (input.toLowerCase().startsWith("unmark")) {
             int idx = Integer.parseInt(input.split(" ")[1]) - 1;
             tasks.get(idx).markAsUndone();
             storage.save(tasks);
-            ui.taskUpdated("OK, I've marked this task as not done yet:", tasks.get(idx));
+            Ui.taskUpdated("OK, I've marked this task as not done yet:", tasks.get(idx));
         } else if (input.toLowerCase().startsWith("todo")) {
             String desc = input.substring(5).trim();
             if (desc.isEmpty()) throw new AmadeusException("The description of a todo cannot be empty.");
             tasks.add(new ToDo(desc));
             storage.save(tasks);
-            ui.taskAdded(tasks);
+            Ui.taskAdded(tasks);
         } else if (input.toLowerCase().startsWith("deadline")) {
             String[] parts = input.substring(9).split("/by");
             String desc = parts[0].trim();
-            String by = parts.length > 1 ? parts[1].trim() : "unspecified";
+            String by = parts.length > 1 ? parts[1].trim() : "";
+            if (desc.isEmpty() || by.isEmpty())
+                throw new AmadeusException("Usage: deadline <desc> /by yyyy-MM-dd HHmm");
             tasks.add(new Deadline(desc, by));
             storage.save(tasks);
-            ui.taskAdded(tasks);
+            Ui.taskAdded(tasks);
         } else if (input.toLowerCase().startsWith("event")) {
             String[] parts = input.substring(6).split("/from");
             String desc = parts[0].trim();
-            String from = "", to = "";
-            if (parts.length > 1) {
-                String[] timeParts = parts[1].split("/to");
-                from = timeParts[0].trim();
-                if (timeParts.length > 1) to = timeParts[1].trim();
-            }
+            if (parts.length < 2) throw new AmadeusException("Usage: event <desc> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm");
+            String[] timeParts = parts[1].split("/to");
+            String from = timeParts[0].trim();
+            String to = timeParts.length > 1 ? timeParts[1].trim() : "";
             tasks.add(new Event(desc, from, to));
             storage.save(tasks);
-            ui.taskAdded(tasks);
+            Ui.taskAdded(tasks);
         } else if (input.toLowerCase().startsWith("delete")) {
             int idx = Integer.parseInt(input.split(" ")[1]) - 1;
             Task removed = tasks.remove(idx);
-            ui.taskDeleted(removed, tasks.size());
+            Ui.taskDeleted(removed, tasks.size());
         } else {
             throw new AmadeusException("Sorry, I don't know that command.");
         }

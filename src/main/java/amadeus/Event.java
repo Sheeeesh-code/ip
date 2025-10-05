@@ -1,13 +1,29 @@
 package amadeus;
 
-public class Event extends Task {
-    protected String from;
-    protected String to;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
-    public Event(String description, String from, String to) {
+public class Event extends Task {
+    private final LocalDateTime from;
+    private final LocalDateTime to;
+
+    public Event(String description, String fromStr, String toStr) throws AmadeusException {
         super(description);
-        this.from = from;
-        this.to = to;
+        try {
+            this.from = LocalDateTime.parse(fromStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+        } catch (DateTimeParseException e) {
+            throw new AmadeusException("Invalid start date format. Please use yyyy-MM-dd HHmm.");
+        }
+        LocalDateTime tmpTo = null;
+        if (!toStr.isEmpty()) {
+            try {
+                tmpTo = LocalDateTime.parse(toStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+            } catch (DateTimeParseException e) {
+                throw new AmadeusException("Invalid end date format. Please use yyyy-MM-dd HHmm.");
+            }
+        }
+        this.to = tmpTo;
     }
 
     @Override
@@ -17,13 +33,24 @@ public class Event extends Task {
 
     @Override
     public String toFileFormat() {
-        return "E | " + getStatusIcon() + " | " + description + " | " + from + " | " + to;
+        String toStr = to != null ? to.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")) : "";
+        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " +
+                from.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")) + " | " + toStr;
     }
 
     @Override
     public String toString() {
+        String toStr = to != null ? " to " + to.format(DateTimeFormatter.ofPattern("MMM d yyyy HH:mm")) : "";
         return "[" + getTypeIcon() + "]" + getStatusIcon() + " " + description +
-                " (from: " + from + " to: " + to + ")";
+                " (from: " + from.format(DateTimeFormatter.ofPattern("MMM d yyyy HH:mm")) + toStr + ")";
+    }
+
+    public LocalDateTime getFrom() {
+        return from;
+    }
+
+    public LocalDateTime getTo() {
+        return to;
     }
 }
 
