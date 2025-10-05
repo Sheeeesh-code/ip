@@ -118,10 +118,10 @@ public class Amadeus {
                         } else if (echo.toLowerCase().startsWith("todo")) {
                             String desc = echo.substring(5).trim();
                             if (desc.isEmpty()) {
-                                throw new ExceptionAmadeus("The description of a todo cannot be empty.");
+                                throw new AmadeusException("The description of a todo cannot be empty.");
                             }
                             tasks.add(tasks.size(), new ToDo(desc));
-                            if (desc.isEmpty()) throw new ExceptionAmadeus("The description of a todo cannot be empty.");
+                            if (desc.isEmpty()) throw new AmadeusException("The description of a todo cannot be empty.");
                             storage.save(tasks);
                             System.out.println("────────────────────────────────────────────────────────────────");
                             System.out.println("Got it. I've added this task:");
@@ -168,9 +168,9 @@ public class Amadeus {
                                 System.out.println("Invalid task number!");
                             }
                         } else {
-                            throw new ExceptionAmadeus("Sorry, I don't know that command.");
+                            throw new AmadeusException("Sorry, I don't know that command.");
                         }
-                    } catch (ExceptionAmadeus | IOException e) {
+                    } catch (AmadeusException | IOException e) {
                         System.out.println("────────────────────────────────────────────────────────────────");
                         System.out.println(e.getMessage());
                         System.out.println("────────────────────────────────────────────────────────────────");
