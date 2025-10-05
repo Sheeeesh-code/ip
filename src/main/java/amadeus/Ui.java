@@ -62,4 +62,10 @@ public class Ui {
         System.out.println("Now you have " + newSize + " tasks in the list.");
         printSeparator();
     }
+
+    public void showLoadingError() {
+        printSeparator();
+        System.out.println("⚠️ Error while loading tasks. Starting with an empty list.");
+        printSeparator();
+    }
 }
