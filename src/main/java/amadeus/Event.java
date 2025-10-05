@@ -4,10 +4,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Task for event. It has start and optional end date-time.
+ */
 public class Event extends Task {
     private final LocalDateTime from;
     private final LocalDateTime to;
 
+    /**
+     * Create event with description, start and end string.
+     *
+     * @param description text of task
+     * @param fromStr start date-time like yyyy-MM-dd HHmm
+     * @param toStr end date-time like yyyy-MM-dd HHmm or empty
+     * @throws AmadeusException if date format is wrong
+     */
     public Event(String description, String fromStr, String toStr) throws AmadeusException {
         super(description);
         try {
@@ -45,12 +56,13 @@ public class Event extends Task {
                 " (from: " + from.format(DateTimeFormatter.ofPattern("MMM d yyyy HH:mm")) + toStr + ")";
     }
 
+    /** Get start date-time of event */
     public LocalDateTime getFrom() {
         return from;
     }
 
+    /** Get end date-time of event, may be null */
     public LocalDateTime getTo() {
         return to;
     }
 }
-

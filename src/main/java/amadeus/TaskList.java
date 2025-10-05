@@ -4,17 +4,41 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class manage the list of tasks.
+ * It allow to add, remove, mark, unmark and find tasks.
+ * It also handle commands from user in list mode.
+ */
 public class TaskList {
+    /** List of tasks in memory */
     private final List<Task> tasks;
 
+    /**
+     * Creates empty TaskList.
+     */
     public TaskList() {
         tasks = new ArrayList<>();
     }
 
+    /**
+     * Creates TaskList with already existing tasks.
+     *
+     * @param tasks list of tasks to initialize with
+     */
     public TaskList(List<Task> tasks) {
         this.tasks = tasks;
     }
 
+    /**
+     * Handle command from user and execute it.
+     * Command can be list, mark, unmark, todo, deadline, event, delete or find.
+     *
+     * @param input user command
+     * @param storage storage to save tasks, can be null for find
+     * @param ui user interface to show messages, can be null for find
+     * @throws IOException if saving tasks fail
+     * @throws AmadeusException if command unknown or invalid
+     */
     public void handleCommand(String input, Storage storage, Ui ui) throws IOException, AmadeusException {
         if ("list".equalsIgnoreCase(input)) {
             for (int i = 0; i < tasks.size(); i++) {
@@ -84,22 +108,49 @@ public class TaskList {
         }
     }
 
+    /**
+     * Add new task to the list.
+     *
+     * @param task task to add
+     */
     public void add(Task task) {
         tasks.add(task);
     }
 
+    /**
+     * Get task by index.
+     *
+     * @param index index of task
+     * @return task at index
+     */
     public Task get(int index) {
         return tasks.get(index);
     }
 
+    /**
+     * Remove task by index.
+     *
+     * @param index index of task to remove
+     * @return removed task
+     */
     public Task remove(int index) {
         return tasks.remove(index);
     }
 
+    /**
+     * Return number of tasks in list.
+     *
+     * @return size of task list
+     */
     public int size() {
         return tasks.size();
     }
 
+    /**
+     * Return all tasks in list.
+     *
+     * @return list of tasks
+     */
     public List<Task> getAll() {
         return tasks;
     }
