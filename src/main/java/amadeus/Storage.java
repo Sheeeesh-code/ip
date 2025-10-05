@@ -10,20 +10,19 @@ public class Storage {
         this.filePath = filePath;
     }
 
-    public void save(Task[] tasks, int count) throws IOException {
+    public void save(List<Task> tasks) throws IOException {
         File file = new File(filePath);
         File parent = file.getParentFile();
         if (parent != null) {
             parent.mkdirs();
         }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            for (int i = 0; i < count; i++) {
-                writer.write(tasks[i].toFileFormat());
+            for (Task t : tasks) {
+                writer.write(t.toFileFormat());
                 writer.newLine();
             }
         }
     }
-
     public List<Task> load() {
         List<Task> tasks = new ArrayList<>();
         File file = new File(filePath);

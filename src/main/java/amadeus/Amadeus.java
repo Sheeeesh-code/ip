@@ -2,32 +2,27 @@ package amadeus;
 
 import java.util.Scanner;
 import java.util.ArrayList;
-
-import java.util.List;
 import java.io.IOException;
 
 public class Amadeus {
     public static void main(String[] args) {
-        ArrayList<Task> tasks = new ArrayList<>();
         Storage storage = new Storage("./data/amadeus.txt");
-        List<Task> loadedTasks = storage.load();
-        Task[] tasks = new Task[100];
-        int count = 0;
-        for (Task t : loadedTasks) {
-            tasks[count++] = t;
-        }
+        ArrayList<Task> tasks = new ArrayList<>(storage.load());
+
 
         String logo =
-                "╔══════════════════════════════════════════════════════════════╗\n"
-                        + "║                                                              ║\n"
-                        + "║  █████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗██╗   ██╗███████╗ ║\n"
-                        + "║ ██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝██║   ██║██╔════╝ ║\n"
-                        + "║ ███████║██╔████╔██║███████║██║  ██║█████╗  ██║   ██║███████╗ ║\n"
-                        + "║ ██╔══██║██║╚██╔╝██║██╔══██║██║  ██║██╔══╝  ██║   ██║╚════██║ ║\n"
-                        + "║ ██║  ██║██║ ╚═╝ ██║██║  ██║██████╔╝███████╗╚██████╔╝███████║ ║\n"
-                        + "║ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝ ║\n"
-                        + "║                                                              ║\n"
-                        + "╚══════════════════════════════════════════════════════════════╝\n";
+                """
+                        ╔══════════════════════════════════════════════════════════════╗
+                        ║                                                              ║
+                        ║  █████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗██╗   ██╗███████╗ ║
+                        ║ ██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝██║   ██║██╔════╝ ║
+                        ║ ███████║██╔████╔██║███████║██║  ██║█████╗  ██║   ██║███████╗ ║
+                        ║ ██╔══██║██║╚██╔╝██║██╔══██║██║  ██║██╔══╝  ██║   ██║╚════██║ ║
+                        ║ ██║  ██║██║ ╚═╝ ██║██║  ██║██████╔╝███████╗╚██████╔╝███████║ ║
+                        ║ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝ ║
+                        ║                                                              ║
+                        ╚══════════════════════════════════════════════════════════════╝
+                        """;
 
         System.out.println("Hello from\n" + logo);
 
@@ -107,8 +102,7 @@ public class Amadeus {
                         } else if (echo.toLowerCase().startsWith("mark")) {
                             int idx = Integer.parseInt(echo.split(" ")[1]) - 1;
                             tasks.get(idx).markAsDone();
-                            tasks[idx].markAsDone();
-                            storage.save(tasks, count);
+                            storage.save(tasks);
                             System.out.println("────────────────────────────────────────────────────────────────");
                             System.out.println("Nice! I've marked this task as done:");
                             System.out.println("  " + tasks.get(idx));
@@ -116,8 +110,7 @@ public class Amadeus {
                         } else if (echo.toLowerCase().startsWith("unmark")) {
                             int idx = Integer.parseInt(echo.split(" ")[1]) - 1;
                             tasks.get(idx).markAsUndone();
-                            tasks[idx].markAsUndone();
-                            storage.save(tasks, count);
+                            storage.save(tasks);
                             System.out.println("────────────────────────────────────────────────────────────────");
                             System.out.println("OK, I've marked this task as not done yet:");
                             System.out.println("  " + tasks.get(idx));
@@ -129,9 +122,7 @@ public class Amadeus {
                             }
                             tasks.add(tasks.size(), new ToDo(desc));
                             if (desc.isEmpty()) throw new ExceptionAmadeus("The description of a todo cannot be empty.");
-                            tasks[count] = new ToDo(desc);
-                            count++;
-                            storage.save(tasks, count);
+                            storage.save(tasks);
                             System.out.println("────────────────────────────────────────────────────────────────");
                             System.out.println("Got it. I've added this task:");
                             System.out.println("  " + tasks.get(tasks.size() - 1));
@@ -142,9 +133,7 @@ public class Amadeus {
                             String desc = parts[0].trim();
                             String by = parts.length > 1 ? parts[1].trim() : "unspecified";
                             tasks.add(tasks.size(), new Deadline(desc, by));
-                            tasks[count] = new Deadline(desc, by);
-                            count++;
-                            storage.save(tasks, count);
+                            storage.save(tasks);
                             System.out.println("────────────────────────────────────────────────────────────────");
                             System.out.println("Got it. I've added this task:");
                             System.out.println("  " + tasks.get(tasks.size() - 1));
@@ -160,16 +149,11 @@ public class Amadeus {
                                 if (timeParts.length > 1) to = timeParts[1].trim();
                             }
                             tasks.add(tasks.size(), new Event(desc, from, to));
-                            tasks[count] = new Event(desc, from, to);
-                            count++;
-                            storage.save(tasks, count);
+                            storage.save(tasks);
                             System.out.println("────────────────────────────────────────────────────────────────");
                             System.out.println("Got it. I've added this task:");
                             System.out.println("  " + tasks.get(tasks.size() - 1));
                             System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                            System.out.println("────────────────────────────────────────────────────────────────");
-                            System.out.println("  " + tasks[count - 1]);
-                            System.out.println("Now you have " + count + " tasks in the list.");
                             System.out.println("────────────────────────────────────────────────────────────────");
                         } else if (echo.toLowerCase().startsWith("delete")) {
                             try {
@@ -182,22 +166,6 @@ public class Amadeus {
                                 System.out.println("────────────────────────────────────────────────────────────────");
                             } catch (IndexOutOfBoundsException e) {
                                 System.out.println("Invalid task number!");
-                            }
-                            int idx = Integer.parseInt(echo.split(" ")[1]) - 1;
-                            if (idx >= 0 && idx < count) {
-                                System.out.println("────────────────────────────────────────────────────────────────");
-                                System.out.println("Noted. I've removed this task:");
-                                System.out.println("  " + tasks[idx]);
-                                for (int j = idx; j < count - 1; j++) {
-                                    tasks[j] = tasks[j + 1];
-                                }
-                                tasks[count - 1] = null;
-                                count--;
-                                storage.save(tasks, count);
-                                System.out.println("Now you have " + count + " tasks in the list.");
-                                System.out.println("────────────────────────────────────────────────────────────────");
-                            } else {
-                                System.out.println("⚠️ Invalid task number.");
                             }
                         } else {
                             throw new ExceptionAmadeus("Sorry, I don't know that command.");
