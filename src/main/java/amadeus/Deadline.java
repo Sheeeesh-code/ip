@@ -14,6 +14,11 @@ public class Deadline extends Task {
     }
 
     @Override
+    public String toFileFormat() {
+        return "D | " + getStatusIcon() + " | " + description + " | " + by;
+    }
+
+    @Override
     public String toString() {
         return "[" + getTypeIcon() + "]" + getStatusIcon() + " " + description + " (by: " + by + ")";
     }
