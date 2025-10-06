@@ -24,15 +24,15 @@ java -jar ip.jar
 ## Features
 
 ### 1. Echo Mode
-Echo mode repeats whatever you type until you type `Esc`.
+Echo mode repeats whatever you type until you type `Esc`.  
 
-**Usage:**
-Echo
-**Example:**
-Hello
-You just said: Hello
-Esc
-System shutting down...
+**Usage:**  
+Echo  
+**Example:**  
+Hello  
+You just said: Hello  
+Esc  
+System shutting down...  
 
 ---
 
