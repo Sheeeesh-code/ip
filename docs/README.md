@@ -38,12 +38,13 @@ System shutting down...
 
 ### 2. D-mail Mode
 D-mail mode sends messages to the past (in the program's story!). Exit with `El Psy Kongroo`.
-
+(It is the same as the echo mode with some personalisation)
 **Usage:**
 D-mail
 **Example:**
 Hello past!
 📧 Message received in world line 1.130205%: Hello past!
+
 El Psy Kongroo
 System shutting down...
 
